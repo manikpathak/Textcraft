@@ -125,7 +125,7 @@ def execute_command(game: Game, cmd: ParsedCommand, display: Display, console: C
     elif verb == "block":
         logs = game.block()
     elif verb == "eat":
-        success, msg = game.player.eat(cmd.target)
+        success, msg = game.player.eat(cmd.target, count=cmd.count)
         logs = [f"[bold green]{msg}[/bold green]" if success else f"[bold yellow]{msg}[/bold yellow]"]
     elif verb == "equip":
         success, msg = game.player.equip(cmd.target)

@@ -135,27 +135,52 @@ class Player:
         self.equipment[slot] = None
         return True, f"Unequipped {item.name} from {slot}."
 
-    def eat(self, item_id: str) -> Tuple[bool, str]:
-        """Eats a food item from inventory, restoring hunger and saturation."""
-        if not self.has_item(item_id, 1):
-            return False, f"You don't have {item_id.replace('_', ' ')} to eat."
-        item_def = ITEM_REGISTRY.get(item_id)
+    def eat(self, item_id: str, count: int = 1) -> Tuple[bool, str]:
+        """Eats one or more food items from inventory, restoring hunger and saturation."""
+        target = item_id.lower().strip().replace(" ", "_")
+        if not self.has_item(target, 1):
+            # Check if there is an item in inventory matching partial query
+            matched = None
+            for inv_id in self.inventory.keys():
+                if target in inv_id or inv_id in target:
+                    matched = inv_id
+                    break
+            if matched:
+                target = matched
+            else:
+                return False, f"You don't have {item_id.replace('_', ' ')} to eat."
+
+        item_def = ITEM_REGISTRY.get(target)
         if not item_def or not item_def.is_food:
-            return False, f"{item_id.replace('_', ' ').capitalize()} is not edible!"
-        if self.hunger >= self.max_hunger and item_id != "golden_apple":
-            return False, "Your hunger bar is already completely full!"
+            return False, f"{target.replace('_', ' ').title()} is not edible!"
 
-        self.remove_item(item_id, 1)
+        if self.hunger >= self.max_hunger and target != "golden_apple":
+            return False, "Your hunger bar is already completely full (20/20)!"
+
+        available = self.inventory.get(target, 0)
+        to_eat = min(count, available)
+
+        eaten = 0
         old_hunger = self.hunger
-        self.hunger = min(float(self.max_hunger), self.hunger + item_def.food_points)
-        self.saturation = min(float(self.hunger), self.saturation + item_def.saturation)
 
-        # Golden apple gives bonus health
-        if item_id == "golden_apple":
-            self.heal(4)
+        while eaten < to_eat:
+            if self.hunger >= self.max_hunger and target != "golden_apple":
+                break
+            self.remove_item(target, 1)
+            self.hunger = min(float(self.max_hunger), self.hunger + item_def.food_points)
+            self.saturation = min(float(self.hunger), self.saturation + item_def.saturation)
+            if target == "golden_apple":
+                self.heal(4)
+            eaten += 1
 
-        restored = int(self.hunger - old_hunger)
-        return True, f"You ate {item_def.name}. Restored {restored} hunger points!"
+        restored = int(round(self.hunger - old_hunger))
+        stopped_early = (eaten < count and self.hunger >= self.max_hunger and target != "golden_apple")
+
+        portion_text = f"{eaten}x {item_def.name}"
+        if stopped_early:
+            return True, f"You ate {portion_text} (hunger reached maximum 20/20). Restored {restored} hunger points!"
+        else:
+            return True, f"You ate {portion_text}. Restored {restored} hunger points!"
 
     def take_damage(self, amount: int, ignore_armor: bool = False) -> int:
         """Applies damage considering armor reduction (Minecraft damage formula)."""

@@ -63,6 +63,33 @@ def test_player_eating_and_hunger():
     assert p.hunger == 18.0
     assert not p.has_item("steak", 1)
 
+def test_player_eating_multiple_portions():
+    p = Player()
+    p.hunger = 8.0
+    # Add 5 apples (apple restores 4 hunger)
+    p.add_item("apple", 5)
+
+    # Eat 2 apples: restores 8 hunger -> hunger = 16.0
+    ok, msg = p.eat("apple", count=2)
+    assert ok
+    assert "2x Apple" in msg
+    assert p.hunger == 16.0
+    assert p.inventory["apple"] == 3
+
+    # Eat 3 apples: 1 apple brings hunger to 20.0 (full), so stops early eating only 1 apple!
+    ok, msg = p.eat("apple", count=3)
+    assert ok
+    assert "1x Apple" in msg
+    assert "hunger reached maximum" in msg
+    assert p.hunger == 20.0
+    assert p.inventory["apple"] == 2
+
+    # Attempt to eat while full
+    ok, msg = p.eat("apple", count=1)
+    assert not ok
+    assert "completely full" in msg
+
+
 def test_player_damage_and_armor_absorption():
     p = Player()
     p.add_item("diamond_chestplate", 1)

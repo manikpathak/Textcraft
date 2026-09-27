@@ -85,7 +85,7 @@ python3 run.py
 | **Storage** | `take <qty> <item>` | `take 5 coal from chest` | Withdraw items from a placed chest |
 | **Equipment** | `equip <item>` | `wear iron_chestplate`, `hold diamond_sword` | Equip armor, weapons, tools, or shields |
 | **Equipment** | `unequip <slot>` | `unequip helmet`, `take off chestplate` | Return equipped gear to inventory |
-| **Survival** | `eat <food>` | `eat steak`, `eat apple` | Consume food to replenish hunger and heal |
+| **Survival** | `eat <food> [count]` | `eat 3 steak`, `eat apple 2`, `eat all bread` | Consume food portions to replenish hunger and heal |
 | **Combat** | `attack <mob>` | `hit zombie`, `kill creeper` | Attack creature with weapon or fists |
 | **Combat** | `shoot <mob>` | `shoot at skeleton` | Fire bow & arrow from a safe distance |
 | **Defense** | `block` | `defend` | Raise shield to block incoming damage |

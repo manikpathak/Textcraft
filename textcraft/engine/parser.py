@@ -145,10 +145,27 @@ class CommandParser:
             target = raw[9:].strip()
             return ParsedCommand(verb="unequip", target=target, raw=raw)
 
-        # Eating: 'eat apple', 'eat steak', 'consume bread'
+        # Eating: 'eat apple', 'eat steak', 'eat 3 steak', 'eat steak 2', 'eat all bread'
         if first in ("eat", "consume", "drink"):
-            target = " ".join(words[1:])
-            return ParsedCommand(verb="eat", target=target, raw=raw)
+            rest = words[1:]
+            count = 1
+            if not rest:
+                return ParsedCommand(verb="eat", target="", count=1, raw=raw)
+            if rest[0].isdigit():
+                count = int(rest[0])
+                target = " ".join(rest[1:])
+            elif rest[-1].isdigit():
+                count = int(rest[-1])
+                target = " ".join(rest[:-1])
+            elif rest[0].lower() in ("all", "max"):
+                count = 999
+                target = " ".join(rest[1:])
+            elif rest[-1].lower() in ("all", "max"):
+                count = 999
+                target = " ".join(rest[:-1])
+            else:
+                target = " ".join(rest)
+            return ParsedCommand(verb="eat", target=target, count=max(1, count), raw=raw)
 
         # Chest storage: 'store 5 coal', 'put 5 iron in chest'
         if first in ("store", "deposit"):

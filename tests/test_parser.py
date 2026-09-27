@@ -60,3 +60,25 @@ def test_combat_commands():
 
     cmd3 = CommandParser.parse("block")
     assert cmd3.verb == "block"
+
+def test_eating_commands():
+    cmd1 = CommandParser.parse("eat apple")
+    assert cmd1.verb == "eat"
+    assert cmd1.target == "apple"
+    assert cmd1.count == 1
+
+    cmd2 = CommandParser.parse("eat 3 steak")
+    assert cmd2.verb == "eat"
+    assert cmd2.target == "steak"
+    assert cmd2.count == 3
+
+    cmd3 = CommandParser.parse("eat bread 2")
+    assert cmd3.verb == "eat"
+    assert cmd3.target == "bread"
+    assert cmd3.count == 2
+
+    cmd4 = CommandParser.parse("eat all apple")
+    assert cmd4.verb == "eat"
+    assert cmd4.target == "apple"
+    assert cmd4.count >= 100
+

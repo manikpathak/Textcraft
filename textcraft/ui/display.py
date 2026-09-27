@@ -321,7 +321,7 @@ class Display:
             ("Storage", "store <qty> <item>", "Deposit items into placed chest"),
             ("Storage", "take <qty> <item>", "Retrieve items from placed chest"),
             ("Equipment", "equip <item> / unequip <slot>", "Wield weapons/tools or wear armor pieces"),
-            ("Survival", "eat <food>", "Consume food to restore hunger & heal"),
+            ("Survival", "eat <food> [count]", "Consume food portions to restore hunger & heal"),
             ("Combat", "attack <mob> / hit <mob>", "Melee attack with held weapon or fists"),
             ("Combat", "shoot <mob>", "Fire bow & arrow from a safe distance"),
             ("Combat", "block", "Raise shield in offhand to absorb attacks"),
