@@ -49,3 +49,24 @@ def test_smelting_workflow():
     assert g.player.inventory.get("iron_ingot") == 2
     assert not g.player.has_item("raw_iron", 1)
     assert not g.player.has_item("coal", 1)
+
+def test_hoe_crafting_and_equipping():
+    g = Game(seed=42)
+    loc = g.get_current_location()
+    loc.place_block("crafting_table", 1)
+
+    # Give resources for wooden hoe: 2 planks, 2 sticks
+    g.player.add_item("oak_planks", 2)
+    g.player.add_item("stick", 2)
+
+    logs = g.craft("wooden_hoe", count=1)
+    assert any("crafted" in log.lower() for log in logs)
+    assert g.player.has_item("wooden_hoe", 1)
+
+    # Equip the hoe
+    ok, msg = g.player.equip("wooden_hoe")
+    assert ok
+    assert g.player.equipment["mainhand"] is not None
+    assert g.player.equipment["mainhand"].id == "wooden_hoe"
+    assert g.player.tool_type == "hoe"
+

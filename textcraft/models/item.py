@@ -171,6 +171,13 @@ ITEM_REGISTRY: Dict[str, Item] = {
     "diamond_shovel": Item("diamond_shovel", "Diamond Shovel", ITEM_CATEGORY_TOOL, "Diamond shovel for effortless excavation.", stack_size=1, tool_type="shovel", tool_tier=TIER_DIAMOND, max_durability=DURABILITY_DIAMOND, attack_damage=4),
     "netherite_shovel": Item("netherite_shovel", "Netherite Shovel", ITEM_CATEGORY_TOOL, "Indestructible spade.", stack_size=1, tool_type="shovel", tool_tier=TIER_NETHERITE, max_durability=DURABILITY_NETHERITE, attack_damage=5),
 
+    # Tools - Hoes
+    "wooden_hoe": Item("wooden_hoe", "Wooden Hoe", ITEM_CATEGORY_TOOL, "Carved wooden hoe for farming.", stack_size=1, tool_type="hoe", tool_tier=TIER_WOOD, max_durability=DURABILITY_WOOD, attack_damage=1),
+    "stone_hoe": Item("stone_hoe", "Stone Hoe", ITEM_CATEGORY_TOOL, "Stone hoe for tilling soil.", stack_size=1, tool_type="hoe", tool_tier=TIER_STONE, max_durability=DURABILITY_STONE, attack_damage=1),
+    "iron_hoe": Item("iron_hoe", "Iron Hoe", ITEM_CATEGORY_TOOL, "Durable iron hoe.", stack_size=1, tool_type="hoe", tool_tier=TIER_IRON, max_durability=DURABILITY_IRON, attack_damage=1),
+    "diamond_hoe": Item("diamond_hoe", "Diamond Hoe", ITEM_CATEGORY_TOOL, "Diamond hoe with extreme longevity.", stack_size=1, tool_type="hoe", tool_tier=TIER_DIAMOND, max_durability=DURABILITY_DIAMOND, attack_damage=1),
+    "netherite_hoe": Item("netherite_hoe", "Netherite Hoe", ITEM_CATEGORY_TOOL, "Indestructible netherite farming hoe.", stack_size=1, tool_type="hoe", tool_tier=TIER_NETHERITE, max_durability=DURABILITY_NETHERITE, attack_damage=1),
+
     # Weapons & Combat Gear
     "bow": Item("bow", "Bow", ITEM_CATEGORY_WEAPON, "A ranged weapon strung with spider silk.", stack_size=1, max_durability=384, attack_damage=6),
     "arrow": Item("arrow", "Arrow", ITEM_CATEGORY_MATERIAL, "Fletched projectile with flint tip.", stack_size=64),

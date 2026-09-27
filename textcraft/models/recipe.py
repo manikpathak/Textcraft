@@ -41,30 +41,35 @@ RECIPES: List[Recipe] = [
     Recipe("wooden_axe", 1, {"oak_planks": 3, "stick": 2}, requires_crafting_table=True, category="tools", description="Basic wooden axe."),
     Recipe("wooden_sword", 1, {"oak_planks": 2, "stick": 1}, requires_crafting_table=False, category="weapons", description="Basic wooden sword."),
     Recipe("wooden_shovel", 1, {"oak_planks": 1, "stick": 2}, requires_crafting_table=True, category="tools", description="Wooden shovel."),
+    Recipe("wooden_hoe", 1, {"oak_planks": 2, "stick": 2}, requires_crafting_table=True, category="tools", description="Wooden hoe for farming."),
 
     # Stone Tools & Weapons
     Recipe("stone_pickaxe", 1, {"cobblestone": 3, "stick": 2}, requires_crafting_table=True, category="tools", description="Stone pickaxe for iron/coal."),
     Recipe("stone_axe", 1, {"cobblestone": 3, "stick": 2}, requires_crafting_table=True, category="tools", description="Durable stone axe."),
     Recipe("stone_sword", 1, {"cobblestone": 2, "stick": 1}, requires_crafting_table=False, category="weapons", description="Stone sword."),
     Recipe("stone_shovel", 1, {"cobblestone": 1, "stick": 2}, requires_crafting_table=True, category="tools", description="Stone shovel."),
+    Recipe("stone_hoe", 1, {"cobblestone": 2, "stick": 2}, requires_crafting_table=True, category="tools", description="Stone hoe for farming."),
 
     # Iron Tools & Weapons
     Recipe("iron_pickaxe", 1, {"iron_ingot": 3, "stick": 2}, requires_crafting_table=True, category="tools", description="Iron pickaxe for gold/diamond."),
     Recipe("iron_axe", 1, {"iron_ingot": 3, "stick": 2}, requires_crafting_table=True, category="tools", description="Sharp iron axe."),
     Recipe("iron_sword", 1, {"iron_ingot": 2, "stick": 1}, requires_crafting_table=True, category="weapons", description="Iron sword."),
     Recipe("iron_shovel", 1, {"iron_ingot": 1, "stick": 2}, requires_crafting_table=True, category="tools", description="Iron shovel."),
+    Recipe("iron_hoe", 1, {"iron_ingot": 2, "stick": 2}, requires_crafting_table=True, category="tools", description="Iron hoe for farming."),
 
     # Diamond Tools & Weapons
     Recipe("diamond_pickaxe", 1, {"diamond": 3, "stick": 2}, requires_crafting_table=True, category="tools", description="Diamond pickaxe for obsidian."),
     Recipe("diamond_axe", 1, {"diamond": 3, "stick": 2}, requires_crafting_table=True, category="tools", description="Superior diamond axe."),
     Recipe("diamond_sword", 1, {"diamond": 2, "stick": 1}, requires_crafting_table=True, category="weapons", description="Lethal diamond blade."),
     Recipe("diamond_shovel", 1, {"diamond": 1, "stick": 2}, requires_crafting_table=True, category="tools", description="Diamond shovel."),
+    Recipe("diamond_hoe", 1, {"diamond": 2, "stick": 2}, requires_crafting_table=True, category="tools", description="Diamond hoe with supreme durability."),
 
     # Netherite Tools
     Recipe("netherite_ingot", 1, {"netherite_scrap": 4, "gold_ingot": 4}, requires_crafting_table=True, category="materials", description="Combine scrap and gold into netherite ingot."),
     Recipe("netherite_pickaxe", 1, {"diamond_pickaxe": 1, "netherite_ingot": 1}, requires_crafting_table=True, category="tools", description="Upgrade diamond pickaxe to netherite."),
     Recipe("netherite_axe", 1, {"diamond_axe": 1, "netherite_ingot": 1}, requires_crafting_table=True, category="tools", description="Upgrade diamond axe to netherite."),
     Recipe("netherite_sword", 1, {"diamond_sword": 1, "netherite_ingot": 1}, requires_crafting_table=True, category="weapons", description="Upgrade diamond sword to netherite."),
+    Recipe("netherite_hoe", 1, {"diamond_hoe": 1, "netherite_ingot": 1}, requires_crafting_table=True, category="tools", description="Upgrade diamond hoe to netherite."),
 
     # Bow & Arrows
     Recipe("bow", 1, {"stick": 3, "string": 3}, requires_crafting_table=True, category="weapons", description="Ranged bow."),
