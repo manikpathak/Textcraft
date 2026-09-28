@@ -30,6 +30,26 @@ TIER_IRON = 3
 TIER_DIAMOND = 4
 TIER_NETHERITE = 5
 
+# Mining Speed (multiplier for block hardness)
+MINING_SPEED = {
+    TIER_HAND:       1.0,
+    TIER_WOOD:       2.0,
+    TIER_STONE:      4.0,
+    TIER_IRON:       6.0,
+    TIER_DIAMOND:    8.0,
+    TIER_NETHERITE:  9.0,
+}
+
+# Mining speed with wrong tool type
+MINING_SPEED_WRONG_TOOL = {
+    TIER_HAND:       1.0,
+    TIER_WOOD:       0.5,
+    TIER_STONE:      0.75,
+    TIER_IRON:       1.0,
+    TIER_DIAMOND:    1.5,
+    TIER_NETHERITE:  2.0,
+}
+
 TIER_NAMES = {
     TIER_HAND: "Bare Hands",
     TIER_WOOD: "Wood",

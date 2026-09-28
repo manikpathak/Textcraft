@@ -4,7 +4,7 @@ import random
 from typing import Dict, List, Optional, Tuple, Any
 from textcraft.config import (
     TICKS_PER_DAY, TICKS_PER_ACTION, DIMENSION_OVERWORLD, DIMENSION_NETHER,
-    DIMENSION_END, HUNGER_DEPLETION_PER_ACTION, TIER_HAND
+    DIMENSION_END, HUNGER_DEPLETION_PER_ACTION, TIER_HAND, MINING_SPEED, MINING_SPEED_WRONG_TOOL
 )
 from textcraft.models.player import Player
 from textcraft.models.location import Location
@@ -186,6 +186,28 @@ class Game:
         # Check tool requirements
         can_drop = block_def.can_harvest_with(self.player.tool_type, self.player.tool_tier)
 
+        # Compute mining time based on block hardness and tool speed
+        tool_type = self.player.tool_type
+        tool_tier = self.player.tool_tier
+        block_harvest_tool = block_def.harvest_tool
+
+        if block_harvest_tool is None or tool_type == block_harvest_tool:
+            speed = MINING_SPEED.get(tool_tier, 1.0)
+        else:
+            speed = MINING_SPEED_WRONG_TOOL.get(tool_tier, 1.0)
+
+        mining_ticks = max(200, int(block_def.hardness * 1000 / speed))
+
+        # Determine difficulty label for feedback
+        if mining_ticks <= 500:
+            difficulty = " (quick)"
+        elif mining_ticks <= 1000:
+            difficulty = ""
+        elif mining_ticks <= 3000:
+            difficulty = " (tough)"
+        else:
+            difficulty = " (grueling)"
+
         # Harvest 1 unit
         loc.harvest_resource(matched_block_id, 1)
 
@@ -197,7 +219,7 @@ class Game:
             drop_count = block_def.drop_count
             self.player.add_item(drop_id, drop_count)
             item_name = ITEM_REGISTRY.get(drop_id, Item(drop_id, drop_id.replace("_", " "), "material")).name
-            logs.append(f"⛏️ You mined {block_def.name} and collected [bold gold1]{drop_count}x {item_name}[/bold gold1]!")
+            logs.append(f"⛏️ You mined {block_def.name}{difficulty} and collected [bold gold1]{drop_count}x {item_name}[/bold gold1]!")
 
             if block_def.xp_reward > 0:
                 leveled = self.player.add_xp(block_def.xp_reward)
@@ -210,7 +232,7 @@ class Game:
         if broken_tool:
             logs.append(f"[bold red]Your {broken_tool} shattered while mining![/bold red]")
 
-        logs.extend(self.advance_time())
+        logs.extend(self.advance_time(mining_ticks))
         return logs
 
     # Crafting
