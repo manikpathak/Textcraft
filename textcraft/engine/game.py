@@ -164,10 +164,18 @@ class Game:
         return logs
 
     # Mining & Gathering Commands
-    def mine(self, target_query: str) -> List[str]:
+    def mine(self, target_query: str, count: int = 1) -> List[str]:
         target = target_query.lower().strip().replace(" ", "_")
         loc = self.get_current_location()
         logs = []
+
+        # Handle "all" keyword
+        if target.startswith("all "):
+            target = target[4:].strip()
+            count = 999  # Large number to mine all available
+        elif target.endswith(" all"):
+            target = target[:-4].strip()
+            count = 999
 
         # Find matching resource
         matched_block_id = None
@@ -196,43 +204,81 @@ class Game:
         else:
             speed = MINING_SPEED_WRONG_TOOL.get(tool_tier, 1.0)
 
-        mining_ticks = max(200, int(block_def.hardness * 1000 / speed))
+        mining_ticks_per_block = max(200, int(block_def.hardness * 1000 / speed))
 
         # Determine difficulty label for feedback
-        if mining_ticks <= 500:
+        if mining_ticks_per_block <= 500:
             difficulty = " (quick)"
-        elif mining_ticks <= 1000:
+        elif mining_ticks_per_block <= 1000:
             difficulty = ""
-        elif mining_ticks <= 3000:
+        elif mining_ticks_per_block <= 3000:
             difficulty = " (tough)"
         else:
             difficulty = " (grueling)"
 
-        # Harvest 1 unit
-        loc.harvest_resource(matched_block_id, 1)
+        # Mine up to count blocks (limited by available resources)
+        available = loc.resources.get(matched_block_id, 0)
+        actual_count = min(count, available)
 
-        # Damage tool
-        broken_tool = self.player.damage_mainhand(1)
+        if actual_count == 0:
+            return [f"There is no '{target_query}' here to mine or harvest. Type 'look' to see available resources."]
 
-        if can_drop:
-            drop_id = block_def.drop_item_id or matched_block_id
-            drop_count = block_def.drop_count
-            self.player.add_item(drop_id, drop_count)
-            item_name = ITEM_REGISTRY.get(drop_id, Item(drop_id, drop_id.replace("_", " "), "material")).name
-            logs.append(f"⛏️ You mined {block_def.name}{difficulty} and collected [bold gold1]{drop_count}x {item_name}[/bold gold1]!")
+        # Track cumulative stats
+        total_ticks = 0
+        total_drops = 0
+        total_xp = 0
+        broken_tools = []
 
-            if block_def.xp_reward > 0:
-                leveled = self.player.add_xp(block_def.xp_reward)
-                logs.append(f"+{block_def.xp_reward} XP")
-                if leveled:
-                    logs.append(f"[bold gold1]✦ LEVEL UP! Reached Level {self.player.level}! ✦[/bold gold1]")
+        for i in range(actual_count):
+            # Harvest 1 unit
+            loc.harvest_resource(matched_block_id, 1)
+
+            # Damage tool
+            broken_tool = self.player.damage_mainhand(1)
+            if broken_tool:
+                broken_tools.append(broken_tool)
+
+            # Process drops
+            if can_drop:
+                drop_id = block_def.drop_item_id or matched_block_id
+                drop_count = block_def.drop_count
+                self.player.add_item(drop_id, drop_count)
+                total_drops += drop_count
+                total_xp += block_def.xp_reward
+
+            total_ticks += mining_ticks_per_block
+
+        # Generate summary message
+        if actual_count == 1:
+            # Single block: detailed message
+            item_name = ITEM_REGISTRY.get(block_def.drop_item_id or matched_block_id, Item(block_def.drop_item_id or matched_block_id, (block_def.drop_item_id or matched_block_id).replace("_", " "), "material")).name
+            if can_drop:
+                logs.append(f"⛏️ You mined {block_def.name}{difficulty} and collected [bold gold1]{total_drops}x {item_name}[/bold gold1]!")
+            else:
+                logs.append(f"[yellow]⚠️ You broke the {block_def.name}, but without the proper tool ({block_def.harvest_tool} tier {block_def.min_tool_tier}+), it crumbled into nothingness![/yellow]")
         else:
-            logs.append(f"[yellow]⚠️ You broke the {block_def.name}, but without the proper tool ({block_def.harvest_tool} tier {block_def.min_tool_tier}+), it crumbled into nothingness![/yellow]")
+            # Multiple blocks: summary message
+            if can_drop:
+                item_name = ITEM_REGISTRY.get(block_def.drop_item_id or matched_block_id, Item(block_def.drop_item_id or matched_block_id, (block_def.drop_item_id or matched_block_id).replace("_", " "), "material")).name
+                logs.append(f"⛏️ You mined {actual_count}x {block_def.name}{difficulty} and collected [bold gold1]{total_drops}x {item_name}[/bold gold1]!")
+            else:
+                logs.append(f"[yellow]⚠️ You broke {actual_count}x {block_def.name}, but without the proper tool, they crumbled into nothingness![/yellow]")
 
-        if broken_tool:
-            logs.append(f"[bold red]Your {broken_tool} shattered while mining![/bold red]")
+        # XP and level up messages
+        if total_xp > 0:
+            logs.append(f"+{total_xp} XP")
+            leveled_count = 0
+            for _ in range(actual_count):
+                if self.player.add_xp(block_def.xp_reward):
+                    leveled_count += 1
+            if leveled_count > 0:
+                logs.append(f"[bold gold1]✦ LEVEL UP! Reached Level {self.player.level}! ✦[/bold gold1]")
 
-        logs.extend(self.advance_time(mining_ticks))
+        # Tool break messages
+        for tool in broken_tools:
+            logs.append(f"[bold red]Your {tool} shattered while mining![/bold red]")
+
+        logs.extend(self.advance_time(total_ticks))
         return logs
 
     # Crafting

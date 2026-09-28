@@ -103,7 +103,7 @@ def execute_command(game: Game, cmd: ParsedCommand, display: Display, console: C
         display.hud(game)
         display.location(game)
     elif verb == "mine":
-        logs = game.mine(cmd.target)
+        logs = game.mine(cmd.target, count=cmd.count)
     elif verb == "craft":
         logs = game.craft(cmd.target, count=cmd.count)
     elif verb == "smelt":

@@ -79,13 +79,35 @@ class CommandParser:
         if raw.lower() in ("build shelter", "build house", "make shelter", "shelter"):
             return ParsedCommand(verb="shelter", raw=raw)
 
-        # Mining / Chopping / Gathering: 'mine oak log', 'chop wood', 'dig dirt'
+        # Mining / Chopping / Gathering: 'mine oak log', 'mine 5 dirt', 'chop wood all'
         if first in ("mine", "chop", "dig", "harvest", "gather", "cut"):
-            target = " ".join(words[1:])
+            rest = words[1:]
+            count = 1
+            target = ""
+
+            # Handle count at start: 'mine 5 dirt'
+            if rest and rest[0].isdigit():
+                count = int(rest[0])
+                target = " ".join(rest[1:])
+            # Handle count at end: 'mine dirt 5'
+            elif rest and rest[-1].isdigit():
+                count = int(rest[-1])
+                target = " ".join(rest[:-1])
+            # Handle 'all' keyword: 'mine all dirt' or 'mine dirt all'
+            elif rest and rest[0].lower() in ("all", "max"):
+                count = 999
+                target = " ".join(rest[1:])
+            elif rest and rest[-1].lower() in ("all", "max"):
+                count = 999
+                target = " ".join(rest[:-1])
+            else:
+                target = " ".join(rest)
+
             # Normalize target aliases (e.g., 'tree' -> 'oak_log', 'wood' -> 'oak_log')
             if target.lower() in ("tree", "wood", "logs", "log"):
                 target = "oak_log"
-            return ParsedCommand(verb="mine", target=target, raw=raw)
+
+            return ParsedCommand(verb="mine", target=target, count=max(1, count), raw=raw)
 
         # Crafting: 'craft wooden_pickaxe [count]' or 'craft 4 torch'
         if first in ("craft", "make", "create"):
