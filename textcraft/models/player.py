@@ -15,6 +15,7 @@ from textcraft.models.item import (
 
 @dataclass
 class Player:
+    name: str = "Steve"
     health: int = DEFAULT_STARTING_HEALTH
     max_health: int = MAX_HEALTH
     hunger: float = float(DEFAULT_STARTING_HUNGER)
@@ -261,6 +262,7 @@ class Player:
         for slot, item in self.equipment.items():
             eq_dict[slot] = item.to_dict() if item else None
         return {
+            "name": self.name,
             "health": self.health,
             "max_health": self.max_health,
             "hunger": self.hunger,
@@ -276,6 +278,7 @@ class Player:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Player":
         player = cls(
+            name=data.get("name", "Steve"),
             health=data.get("health", DEFAULT_STARTING_HEALTH),
             max_health=data.get("max_health", MAX_HEALTH),
             hunger=float(data.get("hunger", DEFAULT_STARTING_HUNGER)),
