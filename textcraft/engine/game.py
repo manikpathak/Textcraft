@@ -4,7 +4,8 @@ import random
 from typing import Dict, List, Optional, Tuple, Any
 from textcraft.config import (
     TICKS_PER_DAY, TICKS_PER_ACTION, DIMENSION_OVERWORLD, DIMENSION_NETHER,
-    DIMENSION_END, HUNGER_DEPLETION_PER_ACTION, TIER_HAND, MINING_SPEED, MINING_SPEED_WRONG_TOOL
+    DIMENSION_END, HUNGER_DEPLETION_PER_ACTION, TIER_HAND, MINING_SPEED, MINING_SPEED_WRONG_TOOL,
+    ICON_FIRE, ICON_DEATH
 )
 from textcraft.models.player import Player
 from textcraft.models.location import Location
@@ -97,7 +98,7 @@ class Game:
         # Check death from starvation or damage
         if not self.player.is_alive:
             self.is_game_over = True
-            logs.append("[bold red]☠️ You died! Game over. ☠️[/bold red]")
+            logs.append(f"[bold red]{ICON_DEATH} You died! Game over. {ICON_DEATH}[/bold red]")
             return logs
 
         # Check day/night transition
@@ -113,7 +114,7 @@ class Game:
             for mob in list(loc.mobs):
                 if mob.burns_in_daylight and mob.is_alive():
                     mob.take_damage(8)
-                    logs.append(f"[bold yellow]🔥 {mob.name} catches fire under the harsh daylight sun![/bold yellow]")
+                    logs.append(f"[bold yellow]{ICON_FIRE} {mob.name} catches fire under the harsh daylight sun![/bold yellow]")
                     if not mob.is_alive():
                         logs.append(f"{mob.name} burned away to ash.")
                         loc.remove_mob(mob)
@@ -380,7 +381,7 @@ class Game:
             self.player.add_xp(xp_gain)
 
         out_name = ITEM_REGISTRY.get(recipe.output_id, Item(recipe.output_id, recipe.output_id.replace("_", " "), "material")).name
-        logs = [f"🔥 Smelted {count}x {matched_input.replace('_', ' ')} using {fuel_units_needed}x {selected_fuel}. Received [bold gold1]{count}x {out_name}[/bold gold1]!"]
+        logs = [f"{ICON_FIRE} Smelted {count}x {matched_input.replace('_', ' ')} using {fuel_units_needed}x {selected_fuel}. Received [bold gold1]{count}x {out_name}[/bold gold1]!"]
         logs.extend(self.advance_time(1000 * count))
         return logs
 

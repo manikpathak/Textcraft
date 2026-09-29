@@ -10,6 +10,7 @@ from rich.progress_bar import ProgressBar
 
 from textcraft.config import (
     ICON_HEART, ICON_HUNGER, ICON_ARMOR, ICON_XP, ICON_CLOCK,
+    ICON_FIRE, ICON_GRASS, ICON_CREATURES,
     COLOR_HEALTH, COLOR_HUNGER, COLOR_ARMOR, COLOR_XP,
     DIMENSION_OVERWORLD, DIMENSION_NETHER, DIMENSION_END
 )
@@ -105,9 +106,9 @@ class Display:
             for res_id, count in loc.resources.items():
                 name = res_id.replace("_", " ").title()
                 res_items.append(f"[bold dark_orange]{name}[/bold dark_orange] [dim]x{count}[/dim]")
-            content_parts.append(f"[bold yellow]🌾 Natural Resources:[/bold yellow] {', '.join(res_items)}")
+            content_parts.append(f"[bold yellow]{ICON_GRASS} Natural Resources:[/bold yellow] {', '.join(res_items)}")
         else:
-            content_parts.append("[dim yellow]🌾 Natural Resources:[/dim yellow] [dim]None remaining here.[/dim]")
+            content_parts.append(f"[dim yellow]{ICON_GRASS} Natural Resources:[/dim yellow] [dim]None remaining here.[/dim]")
 
         # Placed Structures
         structures = []
@@ -116,7 +117,7 @@ class Display:
         if loc.has_crafting_table:
             structures.append("[bold dark_goldenrod]🔨 Crafting Table[/bold dark_goldenrod]")
         if loc.has_furnace:
-            structures.append("[bold dark_orange3]🔥 Furnace[/bold dark_orange3]")
+            structures.append(f"[bold dark_orange3]{ICON_FIRE} Furnace[/bold dark_orange3]")
         if loc.has_chest:
             count = sum(loc.chest_inventory.values())
             structures.append(f"[bold gold1]📦 Storage Chest ({count} items)[/bold gold1]")
@@ -139,7 +140,7 @@ class Display:
                 if mob.is_boss:
                     color = "bold magenta"
                 mob_parts.append(f"[{color}]{m_icon} {mob.name}[/{color}] [dim](HP: {mob.current_health}/{mob.max_health})[/dim]")
-            content_parts.append(f"[bold red3]🐾 Creatures Present:[/bold red3] {', '.join(mob_parts)}")
+            content_parts.append(f"[bold red3]{ICON_CREATURES} Creatures Present:[/bold red3] {', '.join(mob_parts)}")
 
         # Available Exits
         exits = ["[bold cyan][N]orth[/bold cyan]", "[bold cyan][S]outh[/bold cyan]", "[bold cyan][E]ast[/bold cyan]", "[bold cyan][W]est[/bold cyan]"]
