@@ -83,7 +83,7 @@ class Display:
         dim_name = game.current_dimension.replace("_", " ").title()
         time_icon = "☀️" if not game.is_night else "🌙"
 
-        status_line_1 = f" {hearts_str} [bold red]{player.health}/{player.max_health}[/bold red]   {hunger_str} [bold yellow]{int(player.hunger)}/20[/bold yellow]   [bold bright_cyan]{ICON_ARMOR} {player.total_armor}/20[/bold bright_cyan]   [bold green]{ICON_XP} Lvl {player.level}[/bold green]"
+        status_line_1 = f" [bold cyan]{player.name}[/bold cyan]  {hearts_str} [bold red]{player.health}/{player.max_health}[/bold red]   {hunger_str} [bold yellow]{int(player.hunger)}/20[/bold yellow]   [bold bright_cyan]{ICON_ARMOR} {player.total_armor}/20[/bold bright_cyan]   [bold green]{ICON_XP} Lvl {player.level}[/bold green]"
         status_line_2 = f" {time_icon} [bold bright_yellow]{game.time_formatted}[/bold bright_yellow]  |  [bold bright_cyan]{dim_name}[/bold bright_cyan] (X: {x}, Y: {y}, Z: {z})  |  {tool_str}{off_str}"
 
         self.console.print(Panel(
@@ -335,3 +335,39 @@ class Display:
                 help_table.add_row(cat, cmd, desc)
 
         self.console.print(help_table)
+
+    def start_screen(self, saves: List[str]) -> tuple:
+        """Display world selection screen and return (choice_type, save_name).
+
+        choice_type is either "new" or "load".
+        save_name is empty for "new", or the save name for "load".
+        """
+        while True:
+            # Build the menu content
+            lines = [" [bold]Choose Your Adventure[/bold]"]
+            lines.append("")
+            lines.append(" [bold green][N][/bold green] New Game")
+
+            for i, save_name in enumerate(saves, 1):
+                lines.append(f" [bold green][{i}][/bold green] {save_name}")
+
+            menu_text = "\n".join(lines)
+            self.console.print(Panel(menu_text, border_style="gold1", padding=(1, 2)))
+
+            # Get user choice
+            choice = self.console.input("[bold cyan]Enter choice (N or 1–{0}): [/bold cyan]".format(len(saves))).strip().upper()
+
+            if choice == "N":
+                return ("new", "")
+
+            if choice.isdigit():
+                idx = int(choice) - 1
+                if 0 <= idx < len(saves):
+                    return ("load", saves[idx])
+
+            self.console.print("[yellow]Invalid choice. Try again.[/yellow]")
+
+    def prompt_player_name(self) -> str:
+        """Prompt for player name, return input or default to 'Steve'."""
+        name = self.console.input("Enter your name [[bold]Steve[/bold]]: ").strip()
+        return name if name else "Steve"

@@ -18,8 +18,19 @@ def run_cli():
 
     display.welcome()
 
-    # World setup
-    game = Game(seed=random.randint(1000, 9999))
+    # World selection and player naming
+    saves = SaveSystem.list_saves()
+    choice, save_name = display.start_screen(saves)
+
+    if choice == "load":
+        game = SaveSystem.load_game(save_name)
+        if game is None:
+            console.print("[red]Failed to load save. Starting new game.[/red]")
+            game = Game(seed=random.randint(1000, 9999))
+            game.player.name = display.prompt_player_name()
+    else:
+        game = Game(seed=random.randint(1000, 9999))
+        game.player.name = display.prompt_player_name()
 
     # Try setting up prompt_toolkit session
     try:
