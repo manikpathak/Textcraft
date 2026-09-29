@@ -10,7 +10,7 @@ from rich.progress_bar import ProgressBar
 
 from textcraft.config import (
     ICON_HEART, ICON_HUNGER, ICON_ARMOR, ICON_XP, ICON_CLOCK,
-    ICON_FIRE, ICON_GRASS, ICON_CREATURES,
+    ICON_FIRE, ICON_GRASS, ICON_CREATURES, IS_WINDOWS,
     COLOR_HEALTH, COLOR_HUNGER, COLOR_ARMOR, COLOR_XP,
     DIMENSION_OVERWORLD, DIMENSION_NETHER, DIMENSION_END
 )
@@ -52,14 +52,23 @@ class Display:
 
     def welcome(self):
         self.console.print(TEXTCRAFT_BANNER)
-        intro = (
-            "[bold white]You awaken on a tranquil expanse under an endless sky.[/bold white]\n"
-            "With bare hands, you must gather wood, fashion tools, build shelters, mine deep for diamonds,\n"
-            "brave the fiery Nether, and conquer the Ender Dragon!\n\n"
-            "[dim cyan]Type [bold white]help[/bold white] for command guide, [bold white]look[/bold white] to inspect surroundings, or [bold white]recipes[/bold white] to see crafting.[/dim cyan]"
-        )
-        self.console.print(Panel(intro, title="[bold gold1]✦ Welcome to Textcraft ✦[/bold gold1]", border_style="gold1"))
-        self.console.print()
+
+        if IS_WINDOWS:
+            intro = (
+                "[bold yellow]The Windows version is unfinished, coming soon![/bold yellow]\n\n"
+                "[dim cyan]Check back later for full Windows support.[/dim cyan]"
+            )
+            self.console.print(Panel(intro, title="[bold red]⚠️  Windows Support[/bold red]", border_style="red"))
+            self.console.print()
+        else:
+            intro = (
+                "[bold white]You awaken on a tranquil expanse under an endless sky.[/bold white]\n"
+                "With bare hands, you must gather wood, fashion tools, build shelters, mine deep for diamonds,\n"
+                "brave the fiery Nether, and conquer the Ender Dragon!\n\n"
+                "[dim cyan]Type [bold white]help[/bold white] for command guide, [bold white]look[/bold white] to inspect surroundings, or [bold white]recipes[/bold white] to see crafting.[/dim cyan]"
+            )
+            self.console.print(Panel(intro, title="[bold gold1]✦ Welcome to Textcraft ✦[/bold gold1]", border_style="gold1"))
+            self.console.print()
 
     def hud(self, game):
         player = game.player
