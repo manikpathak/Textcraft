@@ -1,5 +1,10 @@
 """ASCII art banners, logos, and icons for Textcraft."""
 
+import sys
+
+# Platform detection for icon fallbacks on Windows
+IS_WINDOWS = sys.platform == "win32"
+
 TEXTCRAFT_BANNER = r"""[bold green]
   _______ ______ __   __ _______ _____ _____            ______ _______
  |__   __|  ____|\ \ / /|__   __/ ____|  __ \     /\   |  ____|__   __|
@@ -33,33 +38,65 @@ GAME_OVER_BANNER = r"""[bold red]
                   Score: {score}  |  Days Survived: {days}
 [/dim red]"""
 
-BIOME_ICONS = {
-    "plains": "🌾",
-    "forest": "🌲",
-    "desert": "🏜️",
-    "mountains": "⛰️",
-    "swamp": "🌿",
-    "jungle": "🌴",
-    "snowy_tundra": "❄️",
-    "shallow_cave": "⛏️",
-    "deep_cave": "🪨",
-    "deepslate_cavern": "💎",
-    "nether_wastes": "🔥",
-    "nether_fortress": "🏰",
-    "the_end_island": "🌌",
-}
+if IS_WINDOWS:
+    BIOME_ICONS = {
+        "plains": "*",
+        "forest": "T",
+        "desert": "~",
+        "mountains": "^",
+        "swamp": "=",
+        "jungle": "J",
+        "snowy_tundra": "#",
+        "shallow_cave": "[C]",
+        "deep_cave": "[D]",
+        "deepslate_cavern": "[*]",
+        "nether_wastes": "!",
+        "nether_fortress": "[F]",
+        "the_end_island": "[E]",
+    }
 
-MOB_ICONS = {
-    "cow": "🐮",
-    "sheep": "🐑",
-    "pig": "🐷",
-    "chicken": "🐔",
-    "zombie": "🧟",
-    "skeleton": "💀",
-    "creeper": "💥",
-    "spider": "🕷️",
-    "enderman": "👁️",
-    "blaze": "🔥",
-    "ghast": "👻",
-    "ender_dragon": "🐉",
-}
+    MOB_ICONS = {
+        "cow": "C",
+        "sheep": "S",
+        "pig": "P",
+        "chicken": "B",
+        "zombie": "Z",
+        "skeleton": "K",
+        "creeper": "!",
+        "spider": "8",
+        "enderman": "?",
+        "blaze": "@",
+        "ghast": "G",
+        "ender_dragon": "D",
+    }
+else:
+    BIOME_ICONS = {
+        "plains": "🌾",
+        "forest": "🌲",
+        "desert": "🏜️",
+        "mountains": "⛰️",
+        "swamp": "🌿",
+        "jungle": "🌴",
+        "snowy_tundra": "❄️",
+        "shallow_cave": "⛏️",
+        "deep_cave": "🪨",
+        "deepslate_cavern": "💎",
+        "nether_wastes": "🔥",
+        "nether_fortress": "🏰",
+        "the_end_island": "🌌",
+    }
+
+    MOB_ICONS = {
+        "cow": "🐮",
+        "sheep": "🐑",
+        "pig": "🐷",
+        "chicken": "🐔",
+        "zombie": "🧟",
+        "skeleton": "💀",
+        "creeper": "💥",
+        "spider": "🕷️",
+        "enderman": "👁️",
+        "blaze": "🔥",
+        "ghast": "👻",
+        "ender_dragon": "🐉",
+    }

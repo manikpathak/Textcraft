@@ -1,5 +1,10 @@
 """Configuration constants, game balance, and visual tokens for Textcraft."""
 
+import sys
+
+# Detect if running on Windows (use ASCII icons as fallback)
+IS_WINDOWS = sys.platform == "win32"
+
 # Survival Constants
 MAX_HEALTH = 20
 MAX_HUNGER = 20
@@ -76,16 +81,39 @@ COLOR_DAMAGE = "bold red"
 COLOR_INFO = "bright_blue"
 COLOR_HINT = "dim cyan"
 
-# Symbols & Icons
-ICON_HEART = "♥"
-ICON_HUNGER = "🍗"
-ICON_ARMOR = "🛡️"
-ICON_XP = "✦"
-ICON_SUN = "☀️"
-ICON_MOON = "🌙"
-ICON_COMPASS = "🧭"
-ICON_CLOCK = "⏱️"
-ICON_SWORD = "⚔️"
-ICON_PICKAXE = "⛏️"
-ICON_CHEST = "📦"
-ICON_PORTAL = "🌀"
+# Symbols & Icons (with Windows ASCII fallbacks)
+if IS_WINDOWS:
+    ICON_HEART = "♥"        # Works on Windows
+    ICON_HUNGER = "[F]"     # Food
+    ICON_ARMOR = "[A]"      # Armor
+    ICON_XP = "*"           # XP star
+    ICON_SUN = "[D]"        # Day
+    ICON_MOON = "[N]"       # Night
+    ICON_COMPASS = "[C]"    # Compass
+    ICON_CLOCK = "[T]"      # Time
+    ICON_SWORD = "[W]"      # Weapon
+    ICON_PICKAXE = "[P]"    # Pickaxe
+    ICON_CHEST = "[B]"      # Box/storage
+    ICON_PORTAL = "[*]"     # Portal
+    ICON_FIRE = "[!]"       # Fire
+    ICON_DEATH = "[X]"      # Death
+    ICON_GRASS = "[*]"      # Grass/resources
+    ICON_CREATURES = "[+]"  # Creatures
+else:
+    # Full emoji icons on non-Windows platforms
+    ICON_HEART = "♥"
+    ICON_HUNGER = "🍗"
+    ICON_ARMOR = "🛡️"
+    ICON_XP = "✦"
+    ICON_SUN = "☀️"
+    ICON_MOON = "🌙"
+    ICON_COMPASS = "🧭"
+    ICON_CLOCK = "⏱️"
+    ICON_SWORD = "⚔️"
+    ICON_PICKAXE = "⛏️"
+    ICON_CHEST = "📦"
+    ICON_PORTAL = "🌀"
+    ICON_FIRE = "🔥"
+    ICON_DEATH = "☠️"
+    ICON_GRASS = "🌾"
+    ICON_CREATURES = "🐾"
