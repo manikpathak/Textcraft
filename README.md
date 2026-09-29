@@ -12,6 +12,8 @@ A rich, atmospheric text adventure that recreates the full survival progression 
               A Rich Minecraft Text Adventure
 ```
 
+> **⚠️  Windows Support Notice**: The Windows version is still in **(WIP)** - Windows compatibility features are being developed. Full Windows support coming soon! Mac/Linux versions fully supported.
+
 ---
 
 ## ✨ Features
@@ -29,6 +31,10 @@ A rich, atmospheric text adventure that recreates the full survival progression 
   - **The End**: Craft Eyes of Ender, enter The End, and face the mighty **Ender Dragon**!
 - **Complete Minecraft Survival Mechanics**:
   - **Mining & Tool Tiers**: Fists → Wood → Stone → Iron → Diamond → Netherite with durability tracking. Stone and ores require proper pickaxe tiers to drop.
+  - **Advanced Mining System**: 
+    - **Block Hardness & Mining Timers**: Each block has realistic hardness values (dirt is fast, obsidian takes time). Mining time scales with tool speed and block hardness.
+    - **Tool Efficiency**: Correct tool types (pickaxe for stone, axe for logs, shovel for dirt) mine significantly faster. Wrong tools are slow but still work.
+    - **Batch Mining**: Mine multiple blocks at once (`mine dirt 5` or `mine all stone`) for efficient resource gathering.
   - **Crafting Engine**: 2x2 basic crafting anywhere; place a Crafting Table to unlock full 3x3 weapons, armor, tools, and utilities.
   - **Smelting & Cooking**: Place a Furnace to smelt ores (`raw_iron` → `iron_ingot`) or cook meats (`raw_beef` → `steak`) using fuels like Coal, Charcoal, or Wood.
   - **Building & Shelter**: Construct shelters (`build shelter`) using logs, planks, or cobblestone to create monster-free safe havens. Place beds to sleep through the night and set your respawn point.
@@ -36,7 +42,15 @@ A rich, atmospheric text adventure that recreates the full survival progression 
     - **Passive Mobs**: Cows, Sheep, Pigs, Chickens.
     - **Hostile Mobs**: Zombies and Skeletons (burn in daylight!), Spiders, Endermen, and Creepers (with fuse hissing countdowns!).
     - **Combat Tactics**: Melee weapon swings, critical strikes, bow & arrows at range, and shields to deflect physical strikes and explosions.
-- **Save & Load System**: JSON-based quicksaving and multi-slot saves preserving inventory, world changes, and player stats.
+- **Player Customization**:
+  - **Custom Player Names**: Name your character at game start (defaults to "Steve").
+  - **World Selection Screen**: Start a new game or load from multiple saved worlds with an intuitive menu.
+  - **Persistent Identity**: Player names are saved and restored with your world.
+- **Cross-Platform Support**:
+  - **Mac/Linux**: Full support with rich emoji icons for immersive experience.
+  - **Windows**: ASCII-friendly icon fallbacks for PowerShell compatibility (emojis replaced with readable symbols).
+  - **Auto-Detection**: Platform automatically detected; no configuration needed.
+- **Save & Load System**: JSON-based quicksaving and multi-slot saves preserving inventory, world changes, player stats, and names.
 
 ---
 
@@ -74,7 +88,7 @@ python3 run.py
 | **Inventory** | `inventory` | `i`, `inv`, `bag` | View carried items and equipped gear |
 | **Map** | `map` | `m` | Display the 7x7 local mini-map |
 | **Status** | `status`, `time` | `clock` | Display survival stats and in-game time |
-| **Gathering** | `mine <block>` | `chop tree`, `dig dirt`, `mine coal_ore` | Harvest wood, stone, ores, or soil |
+| **Gathering** | `mine <block> [count]` | `mine dirt`, `mine ore 5`, `mine all stone`, `chop tree`, `dig dirt` | Harvest wood, stone, ores, or soil. Supports batch mining with count or "all" keyword |
 | **Recipes** | `recipes [filter]` | `recipe pickaxe`, `recipes` | View recipe book and material requirements |
 | **Crafting** | `craft <item> [count]` | `craft wooden_pickaxe`, `craft 4 torch` | Craft tools, armor, or items |
 | **Smelting** | `smelt <item> [with <fuel>]` | `smelt raw_iron with coal`, `cook raw_beef` | Smelt ingots or cook food in a furnace |
